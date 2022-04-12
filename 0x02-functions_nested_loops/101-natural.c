@@ -1,26 +1,19 @@
 #include <stdio.h>
-
 /**
- * main - list all natural numbers multiples of 3 & 5
+ *main - check for multiples of 3 and 5
  *
- * Return: Always 0.
+ *Return: 0 always
  */
-
 int main(void)
 {
-	int num, sum;
-
-	sum = 0;
-
-	for (num = 0; num < 1024; num++)
-	{
-		if (num % 3 == 0 || num % 5 == 0)
-		{
-			sum += num;
-		}
-	}
-
-	printf("%d\n", sum);
-
-	return (0);
+int x = 1024, y, sum = 0;
+for (y = 0; y < x; y++)
+{
+if ((y % 3 == 0) || (y % 5 == 0))
+{
+sum = sum + y;
+}
+}
+printf("%d\n", sum);
+return (0);
 }
