@@ -1,40 +1,54 @@
-# include "main.h"
-# include <stdlib.h>
+#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+int _strlen_recursion(char *s);
 
 /**
- *str_concat - concat 2 strings.
- *@s1: first string.
- *@s2: second string.
- *Return: pointer to string.
-*/
-
+ * *str_concat - Concatenates two strings
+ * @s1: String
+ * @s2: String
+ * Return: Contents of s1 followed by s2 and null terminated
+ */
 char *str_concat(char *s1, char *s2)
 {
-	char *s;
-	int i = 0, j = 0, k = 0;
+	char *new, *s1cp, *s2cp;
+	int len1 = 0, len2 = 0, i, j = 0;
 
+	s1cp = s1;
+	s2cp = s2;
 	if (s1 != NULL)
-		for (; s1[i]; i++)
-		;
+		len1 = _strlen_recursion(s1cp);
 	if (s2 != NULL)
-		for (; s2[j]; j++)
-		;
+		len2 = _strlen_recursion(s2cp);
 
-	s = malloc(sizeof(char) * (i + j + 1));
-	if (s == NULL)
+	new = (char *) malloc(sizeof(char) * len1 + len2 + 1);
+
+	if (new == NULL)
 		return (NULL);
 
-	while (k < i)
+	for (i = 0; i < len1; i++)
+		new[i] = s1[i];
+
+	for (i = len1; i < len1 + len2; i++)
 	{
-		s[k] = s1[k];
-		k++;
+		new[i] = s2[j];
+		j++;
 	}
 
-	while (k < i + j)
-	{
-		s[k] = s2[k - i];
-		k++;
-	}
-	s[k] = '\0';
-	return (s);
+	new[i] = '\0';
+
+	return (new);
+}
+
+/**
+ * _strlen_recursion - Length of a string
+ * @s: char pointer
+ * Return: Integer variable
+ */
+int _strlen_recursion(char *s)
+{
+	if (*s != '\0')
+		return (1 + _strlen_recursion(++s));
+	return (0);
 }
