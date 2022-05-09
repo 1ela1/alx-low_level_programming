@@ -1,66 +1,87 @@
 #include "dog.h"
-#include <stdlib.h>
+
+char *_strcpy(char *dest, char *src);
+int _strlen_recursion(char *s);
+
 /**
- * _strdup - returns a pointer to a newly allocated space in memory, which
- * contains a copy of the string given as a parameter.
- * @str: string to copy
+ * *new_dog - Create a new dog and make a copy of the data
+ * @name: String name given
+ * @age: Float, age in years
+ * @owner: String, name of the owner
  *
- * Return: Pointer
- */
-char *_strdup(char *str)
-{
-	int l, i;
-	char *s;
-
-	if (str == NULL)
-		return (0);
-
-	l = 0;
-	while (*(str + l))
-		l++;
-
-	s = malloc(sizeof(char) * l + 1);
-
-	if (s == 0)
-		return (0);
-
-	for (i = 0; i <= l; i++)
-	{
-		*(s + i) = *(str + i);
-	}
-	return (s);
-}
-/**
- * new_dog - creates a new dog
- * @name: name of dog
- * @age: age of dog
- * @owner: owner of dog
- *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * Return: Pointer to the structure with the data
  */
 dog_t *new_dog(char *name, float age, char *owner)
 {
-	dog_t *new_dog;
+	dog_t *dog_new;
 
-	new_dog = malloc(sizeof(struct dog));
+	char *name_new, *owner_new;
 
-	if (new_dog == 0 || name == 0 || owner == 0)
-		return (0);
+	if (name == NULL || owner == NULL)
+		return (NULL);
 
-	new_dog->name = _strdup(name);
-	if (new_dog->name == 0)
+	dog_new = malloc(sizeof(dog_t));
+	if (dog_new == NULL)
+		return (NULL);
+
+	name_new = malloc(_strlen_recursion(name) + 1 * sizeof(char));
+	if (name_new == NULL)
 	{
-		free(new_dog);
-		return (0);
+		free(dog_new);
+		return (NULL);
 	}
-	new_dog->age = age;
-	new_dog->owner = _strdup(owner);
-	if (new_dog->owner == 0)
+
+	_strcpy(name_new, name);
+
+	owner_new = malloc(_strlen_recursion(owner) + 1 * sizeof(char));
+
+	if (owner_new == NULL)
 	{
-		free(new_dog);
-		free(new_dog->name);
-		return (0);
+		free(name_new);
+		free(dog_new);
+		return (NULL);
 	}
-	return (new_dog);
+
+	_strcpy(owner_new, owner);
+
+	dog_new->name = name_new;
+	dog_new->age = age;
+	dog_new->owner = owner_new;
+
+	return (dog_new);
+}
+
+/**
+ * *_strcpy - Copy the string pointed
+ * @dest: Pointer of a char[] variable
+ * @src: Pointer of a char[] variable
+ *
+ * Return: Copy of the pointer char
+ */
+char *_strcpy(char *dest, char *src)
+{
+	int counter = 0;
+
+	while (*src != '\0')
+	{
+		*dest = *src;
+		dest++;
+		src++;
+		counter++;
+	}
+	*dest = '\0';
+	dest -= counter;
+	return (dest);
+}
+
+/**
+ * _strlen_recursion - Length of a string
+ *@s: char pointer
+ *Return: Integer variable
+ */
+int _strlen_recursion(char *s)
+{
+	if (*s != '\0')
+		return (1 + _strlen_recursion(++s));
+	return (0);
 }
